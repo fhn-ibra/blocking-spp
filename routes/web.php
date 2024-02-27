@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin;
+use App\Http\Controllers\Login;
+use App\Http\Controllers\Siswa;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['middleware' => ['guest']], function () {
+    Route::get('/login', [Login::class, 'index'])->name('login');
+    Route::post('/login/proses', [Login::class, 'proses']);
+});
+
+
+Route::get('/logout', [Login::class, 'logout']);
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::group(['middleware' => ['cekUserLogin:admin']], function () {
+        Route::resource('admin', Admin::class);
+    });
+        Route::group(['middleware' => ['cekUserLogin:siswa']], function () {
+            Route::resource('siswa', Siswa::class);
+    });
 });
