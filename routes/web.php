@@ -28,8 +28,12 @@ Route::get('/logout', [Login::class, 'logout']);
 Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['cekUserLogin:admin']], function () {
         Route::resource('admin', Admin::class);
-        Route::get('/pembayaran', [Spp::class, 'index']);
+        Route::get('/pembayaran', [Spp::class, 'index'])->name('pembayaran');
         Route::post('/pembayaran/save', [Spp::class, 'save']);
+        Route::delete('/pembayaran/delete/{id}', [Spp::class, 'delete'])->name('pembayaran.delete');
+        Route::get('/pembayaran/edit/{id}', [Spp::class, 'edit'])->name('pembayaran.edit');
+        Route::put('/pembayaran/update/{id}', [Spp::class, 'update'])->name('pembayaran.update');
+
     });
         Route::group(['middleware' => ['cekUserLogin:siswa']], function () {
             Route::resource('siswa', Siswa::class);

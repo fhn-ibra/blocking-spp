@@ -19,4 +19,25 @@ class Spp extends Controller
         SppModel::create($request->except(['_token', 'simpan']));
         return redirect('/pembayaran')->with(['dataTambah' => true]);
     }
+
+    public function delete(SppModel $id){
+        $id->delete();
+        return redirect('/pembayaran')->with(['dataDelete' => true]);
+    }
+
+    public function edit($id){
+        $data = [
+            'title' => 'Edit Data SPP',
+            'pembayaran' => SppModel::find($id)
+        ];
+        
+        return view('pembayaran.edit', $data);
+    }
+
+    public function update(Request $request, $id){
+        $pembayaran = SppModel::find($id);
+        $pembayaran->update($request->except(['_token', '_method']));
+
+        return redirect('/pembayaran')->with(['dataEdit' => true]);
+    }
 }

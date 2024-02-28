@@ -8,6 +8,6 @@ class Admin extends Controller
 {
 
     public function index(){
-        echo "Halaman Admin";
+        return redirect()->route('pembayaran');
     }
 }
