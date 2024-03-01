@@ -17,7 +17,6 @@
 
                     <table class="table table-sm table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
                         <thead>
-                            ktr
 
                             <th>No</th>
                             <th>Nama Siswa</th>
@@ -30,7 +29,7 @@
                             @php
                             $no = 1; @endphp
                             @foreach ($pembayaran as $row)
-                                ktr>
+                                <tr>
                                 <td width="5%">{{ $no++ }}</td>
                                 <td>{{ $row->nama }}</td>
                                 <td>{{ $row->tgl_bayar }}</td>

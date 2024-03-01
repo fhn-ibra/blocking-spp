@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class Login extends Controller
@@ -22,7 +23,7 @@ class Login extends Controller
             $request->session()->regenerate();
 
             if(Auth::user()->level == 'admin'){
-                return redirect()->intended('admin');
+                return redirect('/pembayaran');
             } elseif(Auth::user()->level == 'siswa'){
                 return redirect()->intended('siswa');
             }
@@ -35,5 +36,23 @@ class Login extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('login');
+    }
+
+    public function akunku(Request $request){
+        // dd($request->all());
+        $akun = User::find(Auth::user()->id);
+
+        if($request->password == null){
+           $akun->nama = $request->nama; 
+           $akun->username = $request->username; 
+           $akun->save();
+           return back()->with(['dataAkun' => true]); 
+        } else {
+            $akun->nama = $request->nama; 
+           $akun->username = $request->username; 
+           $akun->password = $request->password; 
+           $akun->save();
+           return back()->with(['dataAkun' => true]);
+        }
     }
 }

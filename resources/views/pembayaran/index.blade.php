@@ -7,11 +7,12 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">CRUD Laravel
-                    <button class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#tambahData">Tambah
-                        Data</button>
 
-                </h6>
+                <button class="btn btn-sm btn-primary float-left" onclick="printData()">Print</button>
+                <button class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#tambahData">Tambah
+                    Data</button>
+
+
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -49,8 +50,10 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="editModalLabel{{ $row->id }}">Edit Data Siswa</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <h5 class="modal-title" id="editModalLabel{{ $row->id }}">Edit Data
+                                                    Siswa</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
                                                     <span aria-hidden="true">&times</span>
                                                 </button>
                                             </div>
@@ -59,21 +62,22 @@
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="form-group"> <label for="nama">Nama Siswa</label>
-                                                        <input type="text" class="form-control" id="nama" name="nama"
-                                                            value="{{ $row->nama }}">
+                                                        <input type="text" class="form-control" id="nama"
+                                                            name="nama" value="{{ $row->nama }}">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="tgl_bayar">Tanggal Pembayaran</label>
-                                                        <input type="date" class="form-control" id="tgl_bayar" name="tgl_bayar"
-                                                            value="{{ $row->tgl_bayar }}">
+                                                        <input type="date" class="form-control" id="tgl_bayar"
+                                                            name="tgl_bayar" value="{{ $row->tgl_bayar }}">
                                                     </div>
                                                     <div class "form-group">
                                                         <label for="jumlah">Jumlah</label>
-                                                        <input type="number" class="form-control" id="jumlah" name="jumlah"
-                                                            value="{{ $row->jumlah }}">
+                                                        <input type="number" class="form-control" id="jumlah"
+                                                            name="jumlah" value="{{ $row->jumlah }}">
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Cancel</button>
                                                         <button type="submit" class="btn btn-primary">Save Changes</button>
                                                     </div>
                                                 </form>
@@ -88,7 +92,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('modals')
@@ -139,6 +142,22 @@
 @endsection
 
 @section('js')
+    <script>
+        function printData() {
+            const tableToPrint = document.getElementById('dataTable').cloneNode(true);
+            const actionHeader = tableToPrint.querySelectorAll('th:nth-child(5)');
+            actionHeader.forEach(column => column.remove());
+            const actionData = tableToPrint.querySelectorAll('td:nth-child(5)');
+            actionData.forEach(column => column.remove());
+            const printableContent = tableToPrint.outerHTML;
+            const printWindow = window.open();
+            printWindow.document.write(printableContent);
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+        }
+    </script>
+
     @if (session('dataTambah'))
         <script>
             const Toast = Swal.mixin({
@@ -160,43 +179,43 @@
         </script>
     @endif
     @if (session('dataEdit'))
-    <script>
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        })
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
 
-        Toast.fire({
-            icon: 'success',
-            title: 'Data Berhasil di Edit'
-        })
-    </script>
-@endif
-@if (session('dataDelete'))
-<script>
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    })
+            Toast.fire({
+                icon: 'success',
+                title: 'Data Berhasil di Edit'
+            })
+        </script>
+    @endif
+    @if (session('dataDelete'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
 
-    Toast.fire({
-        icon: 'success',
-        title: 'Data Berhasil di Hapus'
-    })
-</script>
-@endif
+            Toast.fire({
+                icon: 'success',
+                title: 'Data Berhasil di Hapus'
+            })
+        </script>
+    @endif
 @endsection

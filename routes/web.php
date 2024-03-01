@@ -26,13 +26,20 @@ Route::group(['middleware' => ['guest']], function () {
 Route::get('/logout', [Login::class, 'logout']);
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::post('/akun/save', [Login::class, 'akunku']);
+
     Route::group(['middleware' => ['cekUserLogin:admin']], function () {
         Route::resource('admin', Admin::class);
+        
         Route::get('/pembayaran', [Spp::class, 'index'])->name('pembayaran');
         Route::post('/pembayaran/save', [Spp::class, 'save']);
         Route::delete('/pembayaran/delete/{id}', [Spp::class, 'delete'])->name('pembayaran.delete');
         Route::get('/pembayaran/edit/{id}', [Spp::class, 'edit'])->name('pembayaran.edit');
         Route::put('/pembayaran/update/{id}', [Spp::class, 'update'])->name('pembayaran.update');
+
+        Route::get('/akun', [Admin::class, 'index'])->name('akun');
+        Route::put('/akun/update/{id}', [Admin::class, 'update']);
+
 
     });
         Route::group(['middleware' => ['cekUserLogin:siswa']], function () {

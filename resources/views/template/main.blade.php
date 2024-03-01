@@ -75,6 +75,8 @@ scale=1, shrink-to-fit=no">
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
+                                <button class="dropdown-item" data-toggle="modal" data-target="#akun">
+                                    <i class="fas fa-user-alt fa-sm fa-fw mr-2 text-gray-400"></i>Akun Saya</button>
                                 <a class="dropdown-item" href="logout">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>
                             </div>
@@ -107,6 +109,49 @@ scale=1, shrink-to-fit=no">
         <i class="fas fa-angle-up"></i>
     </a>
     @yield('modals')
+
+    <div class="modal fade" id="akun" tabindex="-1" role="dialog" aria- labelledby="exampleModalLabel"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal- dialog-scrollable" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">My Account</h5>
+
+                <button class="close" type="button" data-dismiss="modal" aria- label="Close">
+
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/akun/save" method="POST"> @csrf
+                    <div class="form-group">
+                        <label for="nama">Nama</label>
+                        <input type="text" class="form-control" aria-describedby="nama"
+                            name="nama" value="{{ Auth::user()->nama }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="nama">Username</label>
+                        <input type="text" class="form-control" aria-describedby="username"
+                            name="username" value="{{ Auth::user()->username }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" name="password">
+                    </div>
+            </div>
+            <div class="modal-footer">
+
+                <button class="btn btn-secondary" type="button" data- dismiss="modal">Cancel</button>
+                <input type="submit" class="btn btn-primary" value="Simpan" name="simpan">
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- Bootstrap core JavaScript-->
     <script src="template/vendor/jquery/jquery.min.js"></script>
     <script src="template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -121,4 +166,24 @@ scale=1, shrink-to-fit=no">
     <!-- Page level custom scripts -->
     <script src="template/js/demo/datatables-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session('dataAkun'))
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        Toast.fire({
+            icon: 'success',
+            title: 'Data Akun Berhasil di Edit'
+        })
+    </script>
+@endif
     @yield('js')
